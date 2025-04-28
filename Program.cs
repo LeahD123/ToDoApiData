@@ -10,6 +10,9 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql("server=localhost;user=root;password=Lia120406;database=practicode", ServerVersion.AutoDetect("server=localhost;user=root;password=Lia120406;database=practicode")));
 
 
+//הוספת סוואגר 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // הוסף את CORS
 builder.Services.AddCors(options =>
@@ -29,6 +32,18 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+// הפעלת Swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+    c.RoutePrefix = string.Empty; // אם את רוצה שה-Swagger UI יהיה ב-root
+});
 
 // השתמש במדיניות CORS
 app.UseCors("AllowAllOrigins");
